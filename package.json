@@ -1,0 +1,24 @@
+{
+  "name": "implexcart-international",
+  "version": "1.0.0",
+  "description": "Implex Cart International - Complete MERN Stack E-Commerce Platform",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "cd backend && node server.js",
+    "client": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build"
+  },
+  "keywords": [
+    "mern",
+    "ecommerce",
+    "react",
+    "node",
+    "express",
+    "mongodb",
+    "mongoose",
+    "tailwind"
+  ],
+  "author": "Implex Team",
+  "license": "ISC"
+}
