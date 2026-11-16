@@ -1,9 +1,11 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Globe } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe, User, PackageCheck } from 'lucide-react';
 import { useLocalization } from '../../context/LocalizationContext';
+import { useAuth } from '../../context/AuthContext';
 
-const Footer = ({ onOpenInfoModal, onOpenTrackOrder, onOpenBecomeSeller }) => {
+const Footer = ({ onOpenInfoModal, onOpenTrackOrder, onOpenBecomeSeller, onOpenOrderHistory }) => {
   const { currency, setCurrency, currenciesData, language, setLanguage, languagesData } = useLocalization();
+  const { user, isAuthenticated, openAuthModal } = useAuth();
 
   const handleLinkClick = (e, topic) => {
     e.preventDefault();
@@ -11,17 +13,53 @@ const Footer = ({ onOpenInfoModal, onOpenTrackOrder, onOpenBecomeSeller }) => {
       if (onOpenTrackOrder) onOpenTrackOrder();
     } else if (topic === 'seller') {
       if (onOpenBecomeSeller) onOpenBecomeSeller();
+    } else if (topic === 'account') {
+      if (isAuthenticated) {
+        if (onOpenOrderHistory) onOpenOrderHistory();
+      } else {
+        openAuthModal('signin');
+      }
+    } else if (topic === 'login') {
+      openAuthModal('signin');
     } else if (onOpenInfoModal) {
       onOpenInfoModal(topic);
     }
   };
 
   return (
-    <footer className="bg-slate-900 text-slate-400 text-xs border-t border-slate-800">
+    <footer className="bg-slate-900 text-slate-400 text-xs border-t border-slate-800 pb-20 md:pb-0">
       
       {/* 4-Column Main Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
+        
+        {/* Mobile Quick Action Buttons in Footer */}
+        <div className="md:hidden grid grid-cols-2 gap-3 pb-8 mb-8 border-b border-slate-800">
+          <button
+            onClick={() => {
+              if (isAuthenticated) {
+                if (onOpenOrderHistory) onOpenOrderHistory();
+              } else {
+                openAuthModal('signin');
+              }
+            }}
+            className="flex items-center justify-center space-x-2 bg-slate-800 hover:bg-slate-700 text-white p-3 rounded-xl border border-slate-700 font-bold text-xs transition-colors"
+          >
+            <User className="w-4 h-4 text-orange-500" />
+            <span>{isAuthenticated ? 'My Account' : 'Login / Register'}</span>
+          </button>
+
+          <button
+            onClick={() => {
+              if (onOpenTrackOrder) onOpenTrackOrder();
+            }}
+            className="flex items-center justify-center space-x-2 bg-slate-800 hover:bg-slate-700 text-white p-3 rounded-xl border border-slate-700 font-bold text-xs transition-colors"
+          >
+            <PackageCheck className="w-4 h-4 text-blue-400" />
+            <span>Track My Order</span>
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
           
           {/* Column 1: Brand & Contact Info */}
           <div className="space-y-4">
@@ -66,6 +104,12 @@ const Footer = ({ onOpenInfoModal, onOpenTrackOrder, onOpenBecomeSeller }) => {
               Quick Links
             </h4>
             <ul className="space-y-2.5">
+              <li>
+                <a href="#account" onClick={(e) => handleLinkClick(e, 'account')} className="hover:text-white transition-colors flex items-center space-x-1.5">
+                  <User className="w-3.5 h-3.5 text-orange-400" />
+                  <span>{isAuthenticated ? 'My Account & Orders' : 'Login / Register'}</span>
+                </a>
+              </li>
               <li>
                 <a href="#about" onClick={(e) => handleLinkClick(e, 'about')} className="hover:text-white transition-colors">
                   About Us
@@ -165,8 +209,8 @@ const Footer = ({ onOpenInfoModal, onOpenTrackOrder, onOpenBecomeSeller }) => {
         </div>
 
         {/* Accepted Payment Badges */}
-        <div className="pt-10 mt-10 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-2">
+        <div className="pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
             <span className="text-[11px] font-bold text-slate-500 mr-2 uppercase">Payment Options:</span>
             {['VISA', 'Mastercard', 'PayPal', 'Amex', 'Apple Pay', 'Google Pay', 'Paytm', 'UPI'].map((badge) => (
               <span key={badge} className="bg-slate-800 text-slate-300 text-[10px] font-bold px-2 py-1 rounded border border-slate-700">

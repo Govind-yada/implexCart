@@ -19,26 +19,25 @@ const MainHeader = ({
   const { wishlistCount } = useWishlist();
   const { currency, setCurrency, formatPrice, currenciesData, language, setLanguage, languagesData } = useLocalization();
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
 
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
-        <div className="flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3.5">
+        <div className="flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Logo & Tagline */}
           <a href="#" className="flex-shrink-0 flex flex-col group">
             <div className="flex items-center space-x-1">
-              <span className="text-2xl font-black tracking-tight text-orange-500 font-sans">IMPLEX</span>
-              <span className="text-2xl font-black tracking-tight text-slate-800">CART</span>
-              <span className="text-xs font-semibold text-slate-400 self-end mb-1 ml-1 tracking-wider uppercase">INTERNATIONAL</span>
+              <span className="text-xl sm:text-2xl font-black tracking-tight text-orange-500 font-sans">IMPLEX</span>
+              <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-800">CART</span>
+              <span className="hidden sm:inline text-xs font-semibold text-slate-400 self-end mb-1 ml-1 tracking-wider uppercase">INTERNATIONAL</span>
             </div>
-            <span className="text-[11px] font-bold text-orange-500 tracking-wider uppercase -mt-1 group-hover:text-orange-600 transition-colors">
+            <span className="text-[10px] sm:text-[11px] font-bold text-orange-500 tracking-wider uppercase -mt-0.5 sm:-mt-1 group-hover:text-orange-600 transition-colors">
               Har Ghar Ki Smart Shopping
             </span>
           </a>
 
-          {/* Search Group (Category Select + Input + Button) */}
+          {/* Search Group (Category Select + Input + Button) for Desktop */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -79,9 +78,9 @@ const MainHeader = ({
           </form>
 
           {/* Action Icons & Controls */}
-          <div className="flex items-center space-x-3 sm:space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             
-            {/* Currency & Language Switcher */}
+            {/* Currency & Language Switcher (Desktop) */}
             <div className="hidden lg:flex items-center space-x-2 text-xs font-semibold text-slate-600 border border-slate-200 rounded-md px-2.5 py-1.5 bg-slate-50">
               <Globe className="w-3.5 h-3.5 text-slate-500" />
               <select
@@ -111,8 +110,8 @@ const MainHeader = ({
               </select>
             </div>
 
-            {/* User Account Button */}
-            <div className="relative">
+            {/* User Account Button (Desktop) */}
+            <div className="relative hidden sm:block">
               {isAuthenticated ? (
                 <div>
                   <button
@@ -122,7 +121,7 @@ const MainHeader = ({
                     <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-xs">
                       {user.name.charAt(0).toUpperCase()}
                     </div>
-                    <span className="hidden sm:inline max-w-[90px] truncate">{user.name.split(' ')[0]}</span>
+                    <span className="max-w-[90px] truncate">{user.name.split(' ')[0]}</span>
                     <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
                   </button>
 
@@ -137,14 +136,14 @@ const MainHeader = ({
                       </div>
                       <button
                         onClick={onOpenOrderHistory}
-                        className="w-full text-left px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center space-x-2"
+                        className="w-full text-left px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center space-x-2 cursor-pointer"
                       >
                         <PackageCheck className="w-4 h-4 text-slate-500" />
                         <span>My Orders</span>
                       </button>
                       <button
                         onClick={logout}
-                        className="w-full text-left px-4 py-2 text-xs font-medium text-red-600 hover:bg-red-50 flex items-center space-x-2"
+                        className="w-full text-left px-4 py-2 text-xs font-medium text-red-600 hover:bg-red-50 flex items-center space-x-2 cursor-pointer"
                       >
                         <LogOut className="w-4 h-4 text-red-500" />
                         <span>Sign Out</span>
@@ -158,21 +157,20 @@ const MainHeader = ({
                   className="flex items-center space-x-1.5 text-xs font-semibold text-slate-700 hover:text-blue-700 py-1.5 px-2.5 rounded-md hover:bg-slate-100 transition-colors cursor-pointer"
                 >
                   <User className="w-5 h-5 text-slate-600" />
-                  <span className="hidden sm:inline">Login / Register</span>
+                  <span>Login / Register</span>
                 </button>
               )}
             </div>
 
-            {/* Wishlist Button */}
+            {/* Wishlist Button (Desktop & Tablet) */}
             <a
               href="#wishlist"
               onClick={(e) => {
                 e.preventDefault();
-                // scroll to trending or favorites
                 const target = document.getElementById('best-sellers') || document.getElementById('flash-sale');
                 target?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="relative p-2 text-slate-700 hover:text-red-600 hover:bg-slate-100 rounded-full transition-colors cursor-pointer"
+              className="relative p-2 text-slate-700 hover:text-red-600 hover:bg-slate-100 rounded-full transition-colors cursor-pointer hidden sm:block"
               title="View Wishlist"
             >
               <Heart className="w-5 h-5" />
@@ -183,21 +181,21 @@ const MainHeader = ({
               )}
             </a>
 
-            {/* Cart Button with Total */}
+            {/* Cart Button */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="flex items-center space-x-2 bg-blue-700 hover:bg-blue-800 text-white px-3.5 py-2 rounded-lg font-bold text-xs shadow-xs transition-colors cursor-pointer"
+              className="flex items-center space-x-1.5 sm:space-x-2 bg-blue-700 hover:bg-blue-800 text-white px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg font-bold text-xs shadow-xs transition-colors cursor-pointer"
               title="Open Shopping Cart"
             >
               <div className="relative">
                 <ShoppingBag className="w-4 h-4" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center">
                     {cartCount}
                   </span>
                 )}
               </div>
-              <span className="hidden sm:inline font-bold">
+              <span className="font-bold text-xs">
                 {formatPrice(cartSubtotal)}
               </span>
             </button>
@@ -206,24 +204,24 @@ const MainHeader = ({
         </div>
 
         {/* Mobile Search Row */}
-        <div className="mt-3 md:hidden">
+        <div className="mt-2 md:hidden">
           <form
             onSubmit={(e) => {
               e.preventDefault();
               if (onSearchSubmit) onSearchSubmit();
             }}
-            className="flex items-center border border-slate-300 rounded-lg overflow-hidden bg-white"
+            className="flex items-center border border-slate-300 rounded-lg overflow-hidden bg-white shadow-2xs"
           >
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Search products..."
-              className="flex-1 px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden"
+              placeholder="Search products, brands and more..."
+              className="flex-1 px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden"
             />
             <button
               type="submit"
-              className="bg-blue-700 text-white px-4 py-2 flex items-center justify-center cursor-pointer"
+              className="bg-blue-700 text-white px-3.5 py-2 flex items-center justify-center cursor-pointer"
             >
               <Search className="w-3.5 h-3.5" />
             </button>

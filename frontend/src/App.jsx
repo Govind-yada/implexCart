@@ -27,6 +27,7 @@ import OrderHistoryModal from './components/Orders/OrderHistoryModal';
 import InfoModal from './components/Informational/InfoModal';
 import NewsletterAppCTA from './components/Newsletter/NewsletterAppCTA';
 import Footer from './components/Footer/Footer';
+import MobileBottomNav from './components/Navigation/MobileBottomNav';
 
 function MainApp() {
   const { authToast, isAuthenticated, openAuthModal } = useAuth();
@@ -118,11 +119,11 @@ function MainApp() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white overflow-x-hidden w-full max-w-full pb-14 md:pb-0">
       
       {/* Toast Notification */}
       {authToast && (
-        <div className={`fixed bottom-5 right-5 z-50 px-4 py-3 rounded-xl shadow-xl text-xs font-bold flex items-center space-x-2 animate-in slide-in-from-bottom-3 ${
+        <div className={`fixed bottom-16 sm:bottom-5 right-4 z-50 px-4 py-3 rounded-xl shadow-xl text-xs font-bold flex items-center space-x-2 animate-in slide-in-from-bottom-3 ${
           authToast.type === 'success' ? 'bg-emerald-600 text-white' :
           authToast.type === 'warning' ? 'bg-amber-600 text-white' :
           authToast.type === 'error' ? 'bg-red-600 text-white' :
@@ -158,7 +159,7 @@ function MainApp() {
       />
 
       {/* Main Body */}
-      <main className="flex-1">
+      <main className="flex-1 w-full overflow-x-hidden">
         
         {/* Hero Banner Slider */}
         <HeroSlider slides={heroSlides} />
@@ -205,7 +206,7 @@ function MainApp() {
                 <select
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value)}
-                  className="px-3 py-1.5 border border-slate-300 rounded-lg bg-slate-50 text-slate-800 text-xs font-semibold focus:outline-hidden"
+                  className="px-3 py-1.5 border border-slate-300 rounded-lg bg-slate-50 text-slate-800 text-xs font-semibold focus:outline-hidden cursor-pointer"
                 >
                   <option value="featured">Featured / Best Match</option>
                   <option value="price-low">Price: Low to High</option>
@@ -226,7 +227,7 @@ function MainApp() {
                     setSelectedBrand('');
                     setSearchQuery('');
                   }}
-                  className="bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-lg"
+                  className="bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-lg cursor-pointer"
                 >
                   Reset All Filters
                 </button>
@@ -303,6 +304,17 @@ function MainApp() {
         onOpenInfoModal={(topic) => setInfoModalTopic(topic)}
         onOpenTrackOrder={handleOpenTrackOrder}
         onOpenBecomeSeller={() => setInfoModalTopic('seller')}
+        onOpenOrderHistory={handleOpenOrderHistory}
+      />
+
+      {/* Mobile Fixed Bottom Navigation Bar */}
+      <MobileBottomNav
+        onSelectCategory={(cat) => {
+          setSelectedCategory(cat);
+          const el = document.getElementById('catalog-grid');
+          el?.scrollIntoView({ behavior: 'smooth' });
+        }}
+        onOpenOrderHistory={handleOpenOrderHistory}
       />
 
       {/* Global Modals */}
